@@ -1,0 +1,27 @@
+.swiper-container{
+    padding: 16px 2px 2px 2px;
+    .swiper-slide{
+        text-align: center;
+    }
+}
+.swiper-button-next.swiper-button-disabled, 
+.swiper-button-prev.swiper-button-disabled{
+    pointer-events: auto;
+}
+
+.loading-general {
+    text-align: center;
+    width: 100%;
+    margin: auto;
+}
+
+.category {
+    a {
+        color: black;
+        text-decoration: none;
+    }
+}
+
+.mat-card {
+    height: 380px;
+}

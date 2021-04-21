@@ -1,0 +1,42 @@
+<div class="loading-general"><mat-spinner *ngIf='loading' style="text-align: center;"></mat-spinner> </div>
+<div *ngIf="products" class="swiper-container" [swiper]="config">
+    <div class="swiper-wrapper h-100">      
+        <div *ngFor="let product of products" class="swiper-slide">
+            <mat-card class="product-item">
+                <mat-chip-list *ngIf="product.discount">
+                    <mat-chip color="warn" selected="true">%{{product.discount}}
+                        OFF</mat-chip>
+                </mat-chip-list>
+                <a [routerLink]="['/products', product.id]" class="image-link">
+                    <img [src]="
+                    storageService.correctImageUrl(product.imagePath)
+                    ? product.imagePath
+                    : '/assets/images/placeholder-img.jpg'
+                    " 
+                    class="swiper-lazy"/>
+                    <div class="swiper-lazy-preloader"></div>
+                </a>
+                <!-- <h4 class="category text-muted"><a [routerLink]="['/products/products-category/', product.productCategoryId]" routerLinkActive="router-link-active" > <span>{{ product.productCategory  }}</span> </a></h4>                                                                      -->
+                <h4 class="category text-muted"><a [routerLink]="['/products/products-category', product.productCategoryId]" routerLinkActive="router-link-active" > <span>{{ product.productCategory  }}</span> </a></h4>                                                                     
+
+                <a  [routerLink]="['/']" class="title text-truncate">
+                   {{ product.productTranslations[0].title }}
+                </a>
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
+                    <div fxLayout="column" fxLayoutAlign="center start">
+                        <h2 *ngIf="product?.discount > 0" class="new-price">${{product.priceAfterDiscount}}</h2>
+                        <h2  [ngClass]="(product?.discount <= 0) ? '' : 'old-price'" >${{product?.price}}</h2>
+                    </div>
+                    
+                    <!-- <app-rating [ratingsCount]="product.ratingsCount" [ratingsValue]="5" [direction]="'column'"></app-rating> -->
+                </div>                            
+                <div class="divider mt-2"></div>
+                <div class="icons">
+                    <app-controls [product]="product" (onOpenProductDialog)="openProductDialog(product)"></app-controls>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+    <button mat-mini-fab class="swiper-button-prev swipe-arrow"><mat-icon>keyboard_arrow_left</mat-icon></button>
+    <button mat-mini-fab class="swiper-button-next swipe-arrow"><mat-icon>keyboard_arrow_right</mat-icon></button> 
+</div>

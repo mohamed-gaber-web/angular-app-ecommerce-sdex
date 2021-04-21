@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import '~@angular/material/prebuilt-themes/indigo-pink.css'; 
+@import '~swiper/swiper-bundle.min.css';
+@import "app/theme/styles/base";
+@import "app/theme/styles/admin";
+@import "app/theme/styles/theme";
+@import "app/theme/styles/gradients";
+@import "app/theme/styles/rtl";
+
+
+
+.product-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 12px;
+}
+
+.mat-card {padding: 0!important;}
+
+.product-item .prices {
+    margin: 12px 0;
+    padding: 0 20px;
+}
+.mat-progress-spinner {text-align: center!important; margin: 20px auto;}
+
+
+
+
+
+@media(max-width: 1024px) {
+    .product-item img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 12px;
+    }
+}

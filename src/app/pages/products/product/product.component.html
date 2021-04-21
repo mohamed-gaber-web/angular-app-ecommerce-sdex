@@ -1,0 +1,133 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-md="35" fxFlex.md="45">
+        
+        <mat-card class="product-image" >
+            <mat-chip-list *ngIf="product?.discount">
+                <mat-chip color="warn" selected="true">%{{product.discount}} OFF</mat-chip>
+            </mat-chip-list>
+            <button mat-icon-button (click)="openZoomViewer()" fxHide="false" fxHide.gt-md><mat-icon>fullscreen</mat-icon></button>
+            <img *ngIf="image" [src]="image" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseLeave($event)"/>
+        </mat-card>       
+
+        <div class="small-carousel"> 
+            <div class="swiper-container" [swiper]="config">
+                <div class="swiper-wrapper"> 
+                    <div *ngFor="let image of product?.imagePaths" class="swiper-slide">
+                        <mat-card (click)="selectImage(image)" class="p-1">
+                            <img [src]="
+                            storageService.correctImageUrl(image)
+                            ? image
+                            : '/assets/images/placeholder-img.jpg'
+                            " 
+                             class="swiper-lazy"/>
+                            <div class="swiper-lazy-preloader"></div>
+                        </mat-card>
+                    </div>                    
+                </div>
+                <button mat-icon-button class="swiper-button-prev swipe-arrow"><mat-icon>keyboard_arrow_left</mat-icon></button>
+                <button mat-icon-button class="swiper-button-next swipe-arrow"><mat-icon>keyboard_arrow_right</mat-icon></button> 
+            </div>
+        </div>
+
+
+    </div>
+    <div fxFlex="100" fxFlex.gt-md="45" fxFlex.md="55" ngClass.gt-sm="px-3 m-0" ngClass.sm="mt-2" ngClass.xs="mt-2">
+        
+        <div #zoomViewer fxShow="false" fxShow.gt-md>
+            <mat-card *ngIf="zoomImage" class="zoom-viewer mat-elevation-z18" [ngStyle]="{'background-image': 'url(' + zoomImage + ')'}"></mat-card>
+        </div>
+
+        <h2>{{product?.productTranslations[0].title}}</h2>
+        <div class="py-1 lh">
+            <p class="category"><span class="text-muted fw-500">Category: </span><a [routerLink]="['/products/products-category/', product.productCategoryId]" routerLinkActive="router-link-active" > <span>{{ product.productCategory  }}</span> </a> </p>
+            <p><span class="text-muted fw-500">quantity: </span><span class='stock'>{{ (product?.quantity > 0) ? 'In stock':'Out Of Stock'}}</span></p>
+        </div>  
+         <!-- <div class="py-1">
+            <app-rating [ratingsCount]="product?.ratingsCount" [ratingsValue]="product?.ratingsValue" [direction]="'row'"></app-rating>
+        </div> -->
+        <p class="py-1 text-muted lh">{{product?.productTranslations[0].description}}</p>
+
+        <div class="divider mt-1"></div>
+        <div class="py-2">
+            <h3 class="old-price text-muted"><span *ngIf="product?.discount">${{product?.price | number : '1.2-2'}}</span></h3>
+            <!-- <h2 *ngIf="product?.discount > 0" class="new-price">${{product?.discount}}</h2>
+            <h2  [ngClass]="(product?.discount <= 0) ? '' : 'old-price'" >${{product?.price}}</h2> -->
+            <h2  class="new-price">${{product?.priceAfterDiscount}}</h2>
+        </div>        
+
+        <!-- <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" class="details text-muted py-1">
+            <div *ngIf="product?.color" class="color">
+                <span class="fw-500">Select Color:</span>
+                <button mat-raised-button *ngFor="let color of product?.color" [style.background]="color">&nbsp;</button>              
+            </div>
+            <div *ngIf="product?.size" class="size" ngClass.xs="mt-1">
+                <span class="fw-500">Select Size:</span>
+                <button mat-raised-button *ngFor="let size of product?.size">{{size}}</button>
+            </div>
+        </div> -->
+
+        <div class="py-1">
+            <app-controls [product]="product" [type]="'all'"></app-controls> 
+        </div>
+
+        <div class="divider"></div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted py-1">
+            <button mat-button><mat-icon>mail_outline</mat-icon> Email to a Friend</button>
+            <button mat-icon-button><mat-icon>share</mat-icon></button>
+        </div>
+
+    </div>
+    <div fxFlex="100" fxFlex.gt-md="20" fxHide fxShow.gt-md> 
+
+        <div fxLayout="row wrap" class="info-bar" ngClass.gt-md="m-0">
+            <div fxFlex="100" fxFlex.md="25" fxFlex.sm="50">
+                <mat-card class="light-block" fxLayout="row"  fxLayoutAlign="start center">
+                    <mat-icon class="mat-icon-xlg text-muted m-0">card_giftcard</mat-icon>
+                    <div class="content">
+                        <p>BONUS PLUS</p> 
+                        <span class="text-muted m-0">Make fun of shopping and collect bonuses</span>
+                    </div> 
+                </mat-card> 
+            </div>
+            <div fxFlex="100" fxFlex.md="25" fxFlex.sm="50" class="mt-16"> 
+                <mat-card class="light-block" fxLayout="row"  fxLayoutAlign="start center">
+                    <mat-icon class="mat-icon-xlg text-muted m-0">local_shipping</mat-icon>
+                    <div class="content">
+                        <p>FREE SHIPPING</p> 
+                        <span class="text-muted m-0">Free shipping on all orders over $99</span>
+                    </div> 
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.md="25"fxFlex.sm="50" class="mt-16"> 
+                <mat-card class="light-block" fxLayout="row"  fxLayoutAlign="start center">
+                    <mat-icon class="mat-icon-xlg text-muted m-0">monetization_on</mat-icon>
+                    <div class="content">
+                        <p>MONEY BACK GUARANTEE</p> 
+                        <span class="text-muted m-0">30 Days money return guarantee</span>
+                    </div> 
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.md="25" fxFlex.sm="50" class="mt-16"> 
+                <mat-card class="light-block" fxLayout="row"  fxLayoutAlign="start center">
+                    <mat-icon class="mat-icon-xlg text-muted m-0">history</mat-icon>
+                    <div class="content">
+                        <p>ONLINE SUPPORT 24/7</p> 
+                        <span class="text-muted m-0">Call us: (+100) 123 456 7890</span>
+                    </div> 
+                </mat-card>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- <div class="py-2 mt-2">
+    <h2>Related Products</h2>
+    <div class="divider"></div>
+    <app-products-carousel [products]="relatedProducts"></app-products-carousel>
+</div> -->
+
+

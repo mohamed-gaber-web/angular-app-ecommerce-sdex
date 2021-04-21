@@ -1,0 +1,6 @@
+<div *ngFor="let category of mainCategories">
+    <button mat-menu-item (click)="changeCategory($event)">
+        <span></span>
+    </button>
+    <app-category-list [categories]="categories" [categoryParentId]="category.id" (change)="changeCategory($event)"></app-category-list>
+</div>
